@@ -14,8 +14,8 @@ define(function(require, exports, module) {
     var mainContext = Engine.createContext();
     var charactersWithThumbnails=[];
 
-    var lightbox = new Lightbox();
-
+    // var lightbox = new Lightbox({inTransition:false});
+var lightbox = new Lightbox({inTransition:{duration:100},outTransition:{duration:300}});
     mainContext.add(lightbox);
 
 function destroyLightbox(s) {
@@ -33,7 +33,7 @@ function createLightbox(s) {
   }
 });
 
-  lightSurface.on('touchstart',function() {
+  lightSurface.on('click',function() {
   destroyLightbox();
   });
 
@@ -62,7 +62,7 @@ characters.success(function(response) {
         content: contentString
     });
 
-surface.on('touchstart', gridClickHandler);
+surface.on('click', gridClickHandler);
 
         surfaces.push(surface);
     }
