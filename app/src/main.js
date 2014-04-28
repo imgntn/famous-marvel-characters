@@ -11,6 +11,9 @@ define(function(require, exports, module) {
     var Marvel = require('API/marvel');
     var mainContext = Engine.createContext();
 
+var FastClick = require('fastclick-amd');
+FastClick.attach(document.body);
+
     var charactersWithThumbnails=[];
 
     // var lightbox = new Lightbox({inTransition:false});

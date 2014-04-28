@@ -30,7 +30,8 @@
     "almond": "~0.2.9",
     "famous-polyfills": "git+https://github.com/Famous/polyfills.git#0.1.1",
     "famous": "git+https://github.com/Famous/famous.git#flat0.1.1",
-    "jquery": "~2.1.0"
+    "jquery": "~2.1.0",
+    "fastclick-amd": "*"
   },
   "scripts": {
     "postinstall": "grunt bower"

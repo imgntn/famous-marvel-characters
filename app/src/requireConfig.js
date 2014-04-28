@@ -9,7 +9,8 @@ require.config({
         almond: '../lib/almond/almond',
         'famous-polyfills': '../lib/famous-polyfills/index',
         jquery: '../lib/jquery/dist/jquery',
-        API:'../src/API'
+        API: '../src/API',
+        'fastclick-amd': '../lib/fastclick-amd/fastclick'
     }
 });
 require(['main']);
