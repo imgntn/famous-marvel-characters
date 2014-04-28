@@ -10,8 +10,44 @@ define(function(require, exports, module) {
 //    var StateModifier = require('famous/modifiers/StateModifier');
     var GridLayout = require('famous/views/GridLayout');
     var Lightbox = require('famous/views/Lightbox');
+    var GenericSync = require('famous/inputs/GenericSync');
+    var MouseSync   = require('famous/inputs/MouseSync');
+    var TouchSync   = require('famous/inputs/TouchSync');
+    var ScrollSync  = require('famous/inputs/ScrollSync');
+
     var Marvel = require('API/marvel');
     var mainContext = Engine.createContext();
+
+    var start = 0;
+    var update = 0;
+    var end = 0;
+    var position = [0, 0];
+
+    var genericSync = new GenericSync(function() {
+        return [0, 0];
+    }, {
+        syncClasses: [MouseSync, TouchSync, ScrollSync]
+    });
+    Engine.pipe(genericSync);
+
+    genericSync.on('start', function() {
+        start++;
+        position = [0, 0];
+     // console.log('start:',start,' end:',end,' update:',update,' position:',position);
+    });
+
+    genericSync.on('update', function(data) {
+        update++;
+        position[0] += data.position[0];
+        position[1] += data.position[1];
+        //console.log('start:',start,' end:',end,' update:',update,' position:',position);
+    });
+
+    genericSync.on('end', function() {
+        end++;
+       // console.log('start:',start,' end:',end,' update:',update,' position:',position);
+    });
+
     var charactersWithThumbnails=[];
 
     // var lightbox = new Lightbox({inTransition:false});
@@ -33,7 +69,7 @@ function createLightbox(s) {
   }
 });
 
-  lightSurface.on('click',function() {
+  lightSurface.on('touchstart',function() {
   destroyLightbox();
   });
 
@@ -62,7 +98,7 @@ characters.success(function(response) {
         content: contentString
     });
 
-surface.on('click', gridClickHandler);
+surface.on('touchstart', gridClickHandler);
 
         surfaces.push(surface);
     }
