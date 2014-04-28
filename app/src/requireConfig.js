@@ -9,7 +9,7 @@ require.config({
         almond: '../lib/almond/almond',
         'famous-polyfills': '../lib/famous-polyfills/index',
         jquery: '../lib/jquery/dist/jquery',
-        API:'../lib/API'
+        API:'../src/API'
     }
 });
 require(['main']);
