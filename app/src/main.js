@@ -11,7 +11,7 @@ define(function(require, exports, module) {
     var Marvel = require('API/marvel');
 
     function displayChatMessage(name,text) {
-document.body.innerText=name+text;
+
  }
 
 var myDataRef = new window.Firebase('https://famous-marvel.firebaseio.com/james');
