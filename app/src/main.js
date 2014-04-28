@@ -5,48 +5,11 @@ define(function(require, exports, module) {
     // import dependencies
     var Engine = require('famous/core/Engine');
     var Surface = require('famous/core/Surface');
-//    var Transform = require('famous/core/Transform');
     var ImageSurface = require('famous/surfaces/ImageSurface');
-//    var StateModifier = require('famous/modifiers/StateModifier');
     var GridLayout = require('famous/views/GridLayout');
     var Lightbox = require('famous/views/Lightbox');
-    var GenericSync = require('famous/inputs/GenericSync');
-    var MouseSync   = require('famous/inputs/MouseSync');
-    var TouchSync   = require('famous/inputs/TouchSync');
-    var ScrollSync  = require('famous/inputs/ScrollSync');
-
     var Marvel = require('API/marvel');
     var mainContext = Engine.createContext();
-
-    var start = 0;
-    var update = 0;
-    var end = 0;
-    var position = [0, 0];
-
-    var genericSync = new GenericSync(function() {
-        return [0, 0];
-    }, {
-        syncClasses: [MouseSync, TouchSync, ScrollSync]
-    });
-    Engine.pipe(genericSync);
-
-    genericSync.on('start', function() {
-        start++;
-        position = [0, 0];
-     // console.log('start:',start,' end:',end,' update:',update,' position:',position);
-    });
-
-    genericSync.on('update', function(data) {
-        update++;
-        position[0] += data.position[0];
-        position[1] += data.position[1];
-        //console.log('start:',start,' end:',end,' update:',update,' position:',position);
-    });
-
-    genericSync.on('end', function() {
-        end++;
-       // console.log('start:',start,' end:',end,' update:',update,' position:',position);
-    });
 
     var charactersWithThumbnails=[];
 
@@ -69,7 +32,7 @@ function createLightbox(s) {
   }
 });
 
-  lightSurface.on('touchstart',function() {
+  lightSurface.on('click',function() {
   destroyLightbox();
   });
 
@@ -98,7 +61,7 @@ characters.success(function(response) {
         content: contentString
     });
 
-surface.on('touchstart', gridClickHandler);
+surface.on('click', gridClickHandler);
 
         surfaces.push(surface);
     }
