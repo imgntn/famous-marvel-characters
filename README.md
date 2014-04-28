@@ -6,6 +6,7 @@ famo.us + marvel comics API = famous marvel characters
 
 To Do:
 - add loader w/ animation (initial marvel api call takes about 600ms)
+- change image size request depending on avail. screen size
 - divide results into grids and put grids into a sequenced scrollview
 - add an 'infinite scroll' that fetches more grids when you get close to the last grid
 - style the lightboxes & their animations
