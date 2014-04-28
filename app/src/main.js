@@ -9,6 +9,20 @@ define(function(require, exports, module) {
     var GridLayout = require('famous/views/GridLayout');
     var Lightbox = require('famous/views/Lightbox');
     var Marvel = require('API/marvel');
+
+    function displayChatMessage(name,text) {
+document.body.innerText=name+text;
+ }
+
+var myDataRef = new window.Firebase('https://famous-marvel.firebaseio.com/james');
+
+myDataRef.push({name:'james',text:'HERROO'});
+
+myDataRef.on('child_added', function(snapshot) {
+var message = snapshot.val();
+displayChatMessage(message.name, message.text);
+});
+
     var mainContext = Engine.createContext();
 
 var FastClick = require('fastclick-amd');
@@ -58,7 +72,7 @@ characters.success(function(response) {
 
     for (var i=0;i<response.data.results.length;i++) if (response.data.results[i].thumbnail.path.indexOf('not_available')===-1) charactersWithThumbnails.push(response.data.results[i]);
     for (var j=0;j<charactersWithThumbnails.length;j++) {
-    var contentString=charactersWithThumbnails[j].thumbnail.path + '/standard_large.' + charactersWithThumbnails[j].thumbnail.extension;
+    var contentString=charactersWithThumbnails[j].thumbnail.path + '/standard_fantastic.' + charactersWithThumbnails[j].thumbnail.extension;
     var surface = new ImageSurface({
         size: [undefined, undefined],
         content: contentString
