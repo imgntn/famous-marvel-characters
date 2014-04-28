@@ -5,7 +5,7 @@ define(function(require, exports, module) {
     var Engine = require('famous/core/Engine');
     var ImageSurface = require('famous/surfaces/ImageSurface');
     var StateModifier = require('famous/modifiers/StateModifier');
-
+    var Marvel = require('API/marvel');
     // create the main context
     var mainContext = Engine.createContext();
 
@@ -18,6 +18,8 @@ define(function(require, exports, module) {
     var logoModifier = new StateModifier({
         origin: [0.5, 0.5]
     });
+
+    Marvel.getCharacters();
 
     mainContext.add(logoModifier).add(logo);
 });
