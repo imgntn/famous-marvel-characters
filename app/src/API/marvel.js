@@ -12,7 +12,7 @@ define(function(require, exports, module) {
     }
 
     function getCharacterDetail(characterID) {
-        var characterDetailCall= $.getJSON('http://gateway.marvel.com:80/v1/public/characters/1009159?apikey=d63df546af1b868def725d0dde23c56d');
+        var characterDetailCall= $.getJSON('http://gateway.marvel.com:80/v1/public/characters/'+characterID+'?apikey=d63df546af1b868def725d0dde23c56d');
         return characterDetailCall;
     }
 
