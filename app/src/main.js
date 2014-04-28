@@ -33,7 +33,7 @@ function createLightbox(s) {
   }
 });
 
-  lightSurface.on('click',function() {
+  lightSurface.on('touchstart',function() {
   destroyLightbox();
   });
 
@@ -62,7 +62,7 @@ characters.success(function(response) {
         content: contentString
     });
 
-surface.on('click', gridClickHandler);
+surface.on('touchstart', gridClickHandler);
 
         surfaces.push(surface);
     }
