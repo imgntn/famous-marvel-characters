@@ -7,9 +7,13 @@ define(function(require, exports, module) {
     }
 
     function getCharacters() {
-        $.getJSON('http://gateway.marvel.com:80/v1/public/characters?limit=100&offset=0&apikey=d63df546af1b868def725d0dde23c56d', function(data) {
-           return data;
-        });
+      var characterCall= $.getJSON('http://gateway.marvel.com:80/v1/public/characters?limit=100&offset=0&apikey=d63df546af1b868def725d0dde23c56d');
+        return characterCall;
+    }
+
+    function getCharacterDetail(characterID) {
+        var characterDetailCall= $.getJSON('http://gateway.marvel.com:80/v1/public/characters/1009159?apikey=d63df546af1b868def725d0dde23c56d');
+        return characterDetailCall;
     }
 
     function anotherTest(id) {
@@ -19,6 +23,7 @@ define(function(require, exports, module) {
     module.exports = {
         test: test,
         anotherTest: anotherTest,
-        getCharacters: getCharacters
+        getCharacters: getCharacters,
+        getCharacterDetail:getCharacterDetail
     };
 });
