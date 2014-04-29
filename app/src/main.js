@@ -8,7 +8,9 @@ define(function(require, exports, module) {
     var ImageSurface = require('famous/surfaces/ImageSurface');
     var GridLayout = require('famous/views/GridLayout');
     var Lightbox = require('famous/views/Lightbox');
+    var HeaderFooterLayout = require("famous/views/HeaderFooterLayout");
     var Marvel = require('API/marvel');
+
 
     function displayChatMessage(name,text) {
 
@@ -24,6 +26,36 @@ displayChatMessage(message.name, message.text);
 });
 
     var mainContext = Engine.createContext();
+
+var layout = new HeaderFooterLayout({
+  headerSize: 100,
+  footerSize: 50
+});
+
+layout.header.add(new Surface({
+  content: "Famo.us + Marvel Comics API = Famous Marvel Characters",
+  classes: ["black-bg"],
+  properties: {
+    lineHeight: "100px",
+    textAlign: "center",
+     fontSize:"40px"
+  }
+}));
+
+layout.footer.add(new Surface({
+    content: "James B. Pollack, 2014",
+    classes: ["black-bg"],
+    properties: {
+        lineHeight: "50px",
+        textAlign: "center",
+        fontSize:"20px"
+    }
+}));
+
+
+
+ mainContext.add(layout)
+ 
 
 var FastClick = require('fastclick-amd');
 FastClick.attach(document.body);
@@ -84,7 +116,8 @@ surface.on('click', gridClickHandler);
     }
 
     grid.sequenceFrom(surfaces);
-    mainContext.add(grid);
+    layout.content.add(grid);
+
 });
 
 });
