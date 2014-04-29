@@ -44,6 +44,17 @@ layout.header.add(new Surface({
   }
 }));
 
+layout.footer.add(new Surface({
+    content: 'James B. Pollack, 2014',
+    classes: ['black-bg'],
+    properties: {
+        zIndex:1,
+        lineHeight: '50px',
+        textAlign: 'center',
+        fontSize: '20px'
+    }
+}));
+
 mainContext.add(layout);
 
 var FastClick = require('fastclick-amd');
@@ -95,32 +106,41 @@ function clickHandler() {
     createLightbox(this);
 }
 
-var characters=  Marvel.getCharacters(100,0);
-characters.success(function(response) {
+var charactersSoFar=0;
 
+//should make this dynamic after the first call or something based on the response.data.total
+var totalPagesToFetch=14;
+
+function SortByName(a, b) {
+  var aName = a.characterName.toLowerCase();
+  var bName = b.characterName.toLowerCase();
+  return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
+}
+
+function successCallback(response) {
     for (var i=0;i<response.data.results.length;i++) if (response.data.results[i].thumbnail.path.indexOf('not_available')===-1) charactersWithThumbnails.push(response.data.results[i]);
-    for (var j=0;j<charactersWithThumbnails.length;j++) {
+    for (var j=charactersSoFar;j<charactersWithThumbnails.length;j++) {
     var contentString=charactersWithThumbnails[j].thumbnail.path + '/standard_large.' + charactersWithThumbnails[j].thumbnail.extension;
     var surface = new ImageSurface({
         size: [100,100],
         content: contentString
     });
   surface.pipe(scrollview);
-
+charactersSoFar=charactersWithThumbnails.length;
 surface.on('click', clickHandler);
 surface.clickOrder=j;
+surface.characterName=charactersWithThumbnails[j].name;
+
+//surfaces.splice(j,0,surface)
 surfaces.push(surface);
     }
-});
+  surfaces.sort(SortByName);
+}
 
-layout.footer.add(new Surface({
-    content: 'James B. Pollack, 2014',
-    classes: ['black-bg'],
-    properties: {
-        lineHeight: '50px',
-        textAlign: 'center',
-        fontSize: '20px'
-    }
-}));
+for (var x=0;x<totalPagesToFetch;x++) {
+
+  var characters = Marvel.getCharacters(100,x*100);
+  characters.success(successCallback);
+}
 
 });
