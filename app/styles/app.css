@@ -1,8 +1,20 @@
 html {
-  background: #fff;
+	background-color: 	rgb(101,0,5);
+  	font-family:HelveticaNeue;
+
 } 
 
-.black-bg{
-	background-color:black;
-	color:white;
+
+
+.footer{
+	background-color:rgb(202,112,28);
+	color:ivory;
+}
+
+.menu-left-tab{
+	color: black;
+    text-align: right;
+    background-color: rgb(220,71,33);
+    font-size:20px;
+    padding-right:20px;
 }

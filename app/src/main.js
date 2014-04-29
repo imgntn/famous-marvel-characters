@@ -29,31 +29,67 @@ displayChatMessage(message.name, message.text);
 var mainContext = Engine.createContext();
 
 var layout = new HeaderFooterLayout({
-  headerSize: 100,
-  footerSize: 50
+  headerSize: 0,
+  footerSize: 40
 });
 
-layout.header.add(new Surface({
-  content: 'Famo.us + Marvel',
-  classes: ['black-bg'],
-  properties: {
-    zIndex:1,
-    lineHeight: '100px',
-    textAlign: 'center',
-     fontSize: '40px'
-  }
-}));
-
 layout.footer.add(new Surface({
-    content: 'James B. Pollack, 2014',
-    classes: ['black-bg'],
+    content: 'James B. Pollack (2014)',
+    classes: ['footer'],
     properties: {
         zIndex:1,
-        lineHeight: '50px',
+        lineHeight: '40px',
         textAlign: 'center',
         fontSize: '20px'
     }
 }));
+
+var size=mainContext.getSize();
+
+var downMod1 = new StateModifier({
+  transform: Transform.translate(0,20,0)
+});
+var downMod2 = new StateModifier({
+  transform: Transform.translate(0,140,0)
+});
+
+var downMod3 = new StateModifier({
+  transform: Transform.translate(0,260,0)
+});
+
+var downMod4 = new StateModifier({
+  transform: Transform.translate(0,380,0)
+});
+
+var firstSurface = new Surface({
+  size: [220, 100],
+  content: 'Block of text is static',
+  classes: ['menu-left-tab']
+
+});
+
+var secondSurface = new Surface({
+  size: [220, 100],
+  content: 'Second',
+  classes: ['menu-left-tab']
+});
+
+var thirdSurface = new Surface({
+  size: [220, 100],
+  content: 'Third',
+  classes: ['menu-left-tab']
+});
+
+var fourthSurface = new Surface({
+  size: [220, 100],
+  content: 'Fourth',
+  classes: ['menu-left-tab']
+});
+
+layout.content.add(downMod1).add(firstSurface);
+layout.content.add(downMod2).add(secondSurface);
+layout.content.add(downMod3).add(thirdSurface);
+layout.content.add(downMod4).add(fourthSurface);
 
 mainContext.add(layout);
 
@@ -78,7 +114,7 @@ var lightSurface = new Surface({
     textAlign: 'center',
     fontSize:'40px',
     backgroundColor: '#FA5C4F',
-    zIndex:2
+    zIndex:99
   }
 });
 
@@ -93,15 +129,15 @@ var lightSurface = new Surface({
 var surfaces = [];
 
 var scrollview = new Scrollview();
-scrollview.setOptions({direction:1});
+scrollview.setOptions({});
 scrollview.sequenceFrom(surfaces);
 
 var stateModifier = new StateModifier({
-  transform: Transform.translate(220, 0, 0)
+    origin: [1, 0]
 });
 
 layout.content.add(stateModifier).add(scrollview);
-
+//layout.content.add(scrollview);
 function clickHandler() {
     createLightbox(this);
 }
@@ -109,7 +145,8 @@ function clickHandler() {
 var charactersSoFar=0;
 
 //should make this dynamic after the first call or something based on the response.data.total
-var totalPagesToFetch=14;
+// var totalPagesToFetch=14;
+var totalPagesToFetch=1;
 
 function SortByName(a, b) {
   var aName = a.characterName.toLowerCase();
@@ -131,7 +168,6 @@ surface.on('click', clickHandler);
 surface.clickOrder=j;
 surface.characterName=charactersWithThumbnails[j].name;
 
-//surfaces.splice(j,0,surface)
 surfaces.push(surface);
     }
   surfaces.sort(SortByName);
