@@ -86,7 +86,7 @@ scrollview.setOptions({direction:1});
 scrollview.sequenceFrom(surfaces);
 
 var stateModifier = new StateModifier({
-  transform: Transform.translate(120, 0, 0)
+  transform: Transform.translate(220, 0, 0)
 });
 
 layout.content.add(stateModifier).add(scrollview);
@@ -100,9 +100,9 @@ characters.success(function(response) {
 
     for (var i=0;i<response.data.results.length;i++) if (response.data.results[i].thumbnail.path.indexOf('not_available')===-1) charactersWithThumbnails.push(response.data.results[i]);
     for (var j=0;j<charactersWithThumbnails.length;j++) {
-    var contentString=charactersWithThumbnails[j].thumbnail.path + '/standard_fantastic.' + charactersWithThumbnails[j].thumbnail.extension;
+    var contentString=charactersWithThumbnails[j].thumbnail.path + '/standard_large.' + charactersWithThumbnails[j].thumbnail.extension;
     var surface = new ImageSurface({
-        size: [200, 200],
+        size: [100,100],
         content: contentString
     });
   surface.pipe(scrollview);
