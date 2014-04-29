@@ -6,14 +6,15 @@ define(function(require, exports, module) {
     var Engine = require('famous/core/Engine');
     var Surface = require('famous/core/Surface');
     var ImageSurface = require('famous/surfaces/ImageSurface');
-    var GridLayout = require('famous/views/GridLayout');
     var Lightbox = require('famous/views/Lightbox');
-    var HeaderFooterLayout = require("famous/views/HeaderFooterLayout");
+    var HeaderFooterLayout = require('famous/views/HeaderFooterLayout');
+    var StateModifier = require('famous/modifiers/StateModifier');
+    var Scrollview = require('famous/views/Scrollview');
+    var Transform = require('famous/core/Transform');
     var Marvel = require('API/marvel');
 
-
     function displayChatMessage(name,text) {
-
+      return;
  }
 
 var myDataRef = new window.Firebase('https://famous-marvel.firebaseio.com/james');
@@ -25,7 +26,7 @@ var message = snapshot.val();
 displayChatMessage(message.name, message.text);
 });
 
-    var mainContext = Engine.createContext();
+var mainContext = Engine.createContext();
 
 var layout = new HeaderFooterLayout({
   headerSize: 100,
@@ -33,51 +34,40 @@ var layout = new HeaderFooterLayout({
 });
 
 layout.header.add(new Surface({
-  content: "Famo.us + Marvel Comics API = Famous Marvel Characters",
-  classes: ["black-bg"],
+  content: 'Famo.us + Marvel',
+  classes: ['black-bg'],
   properties: {
-    lineHeight: "100px",
-    textAlign: "center",
-     fontSize:"40px"
+    zIndex:1,
+    lineHeight: '100px',
+    textAlign: 'center',
+     fontSize: '40px'
   }
 }));
 
-layout.footer.add(new Surface({
-    content: "James B. Pollack, 2014",
-    classes: ["black-bg"],
-    properties: {
-        lineHeight: "50px",
-        textAlign: "center",
-        fontSize:"20px"
-    }
-}));
-
-
-
- mainContext.add(layout)
- 
+mainContext.add(layout);
 
 var FastClick = require('fastclick-amd');
 FastClick.attach(document.body);
 
-    var charactersWithThumbnails=[];
+var charactersWithThumbnails=[];
 
-    // var lightbox = new Lightbox({inTransition:false});
 var lightbox = new Lightbox({inTransition:{duration:100},outTransition:{duration:300}});
-    mainContext.add(lightbox);
+mainContext.add(lightbox);
 
 function destroyLightbox(s) {
     lightbox.hide();
 }
 
 function createLightbox(s) {
-    var lightSurface = new Surface({
-  content: charactersWithThumbnails[s.id-1].name,
+
+var lightSurface = new Surface({
+  content: charactersWithThumbnails[s.clickOrder].name,
   properties: {
     color: 'white',
     textAlign: 'center',
     fontSize:'40px',
-    backgroundColor: '#FA5C4F'
+    backgroundColor: '#FA5C4F',
+    zIndex:2
   }
 });
 
@@ -89,35 +79,48 @@ function createLightbox(s) {
 
 }
 
-var grid = new GridLayout({
-  dimensions: [4,4]
-});
-
 var surfaces = [];
 
-function gridClickHandler() {
+var scrollview = new Scrollview();
+scrollview.setOptions({direction:1});
+scrollview.sequenceFrom(surfaces);
+
+var stateModifier = new StateModifier({
+  transform: Transform.translate(120, 0, 0)
+});
+
+layout.content.add(stateModifier).add(scrollview);
+
+function clickHandler() {
     createLightbox(this);
 }
 
-var characters=  Marvel.getCharacters();
+var characters=  Marvel.getCharacters(100,0);
 characters.success(function(response) {
 
     for (var i=0;i<response.data.results.length;i++) if (response.data.results[i].thumbnail.path.indexOf('not_available')===-1) charactersWithThumbnails.push(response.data.results[i]);
     for (var j=0;j<charactersWithThumbnails.length;j++) {
     var contentString=charactersWithThumbnails[j].thumbnail.path + '/standard_fantastic.' + charactersWithThumbnails[j].thumbnail.extension;
     var surface = new ImageSurface({
-        size: [undefined, undefined],
+        size: [200, 200],
         content: contentString
     });
+  surface.pipe(scrollview);
 
-surface.on('click', gridClickHandler);
-
-        surfaces.push(surface);
+surface.on('click', clickHandler);
+surface.clickOrder=j;
+surfaces.push(surface);
     }
-
-    grid.sequenceFrom(surfaces);
-    layout.content.add(grid);
-
 });
+
+layout.footer.add(new Surface({
+    content: 'James B. Pollack, 2014',
+    classes: ['black-bg'],
+    properties: {
+        lineHeight: '50px',
+        textAlign: 'center',
+        fontSize: '20px'
+    }
+}));
 
 });
