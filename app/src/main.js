@@ -11,20 +11,6 @@ define(function(require, exports, module) {
     var StateModifier = require('famous/modifiers/StateModifier');
     var Scrollview = require('famous/views/Scrollview');
     var Transform = require('famous/core/Transform');
-    var Marvel = require('API/marvel');
-
-    function displayChatMessage(name,text) {
-      return;
- }
-
-var myDataRef = new window.Firebase('https://famous-marvel.firebaseio.com/james');
-
-myDataRef.push({name:'james',text:'HERROO'});
-
-myDataRef.on('child_added', function(snapshot) {
-var message = snapshot.val();
-displayChatMessage(message.name, message.text);
-});
 
 var mainContext = Engine.createContext();
 
@@ -34,63 +20,52 @@ var layout = new HeaderFooterLayout({
 });
 
 layout.footer.add(new Surface({
-    content: 'James B. Pollack (2014)',
+    content: 'Data provided by Marvel. © 2014 Marvel',
     classes: ['footer'],
     properties: {
         zIndex:1,
         lineHeight: '40px',
         textAlign: 'center',
-        fontSize: '20px'
+        fontSize: '16px'
     }
 }));
 
-var size=mainContext.getSize();
-
-var downMod1 = new StateModifier({
-  transform: Transform.translate(0,20,0)
-});
-var downMod2 = new StateModifier({
-  transform: Transform.translate(0,140,0)
-});
-
-var downMod3 = new StateModifier({
-  transform: Transform.translate(0,260,0)
-});
-
-var downMod4 = new StateModifier({
-  transform: Transform.translate(0,380,0)
-});
-
-var firstSurface = new Surface({
-  size: [220, 100],
-  content: 'Block of text is static',
+var menuLength= 4;
+var menuSurfaces =[];
+function createMenuSurfaceWithContent(contentString) {
+  var surface = new Surface({
+  size: [210, 100],
+  content: contentString,
   classes: ['menu-left-tab']
 
 });
 
-var secondSurface = new Surface({
-  size: [220, 100],
-  content: 'Second',
-  classes: ['menu-left-tab']
+menuSurfaces.push(surface);
+return surface;
+}
+
+createMenuSurfaceWithContent('A/Z / Z-A');
+createMenuSurfaceWithContent('Most Popular');
+createMenuSurfaceWithContent('Featured');
+createMenuSurfaceWithContent('concept & code: James B. Pollack').addClass('about-me');
+
+function createMenu() {
+  for(var i=0;i<menuLength;i++){
+var rightMod = new StateModifier({
+  transform: Transform.translate(10,0,0)
 });
 
-var thirdSurface = new Surface({
-  size: [220, 100],
-  content: 'Third',
-  classes: ['menu-left-tab']
+var downMod= new StateModifier({
+  transform: Transform.translate(0,30+(120*i),0)
 });
 
-var fourthSurface = new Surface({
-  size: [220, 100],
-  content: 'Fourth',
-  classes: ['menu-left-tab']
-});
+layout.content.add(rightMod).add(downMod).add(menuSurfaces[i]);
 
-layout.content.add(downMod1).add(firstSurface);
-layout.content.add(downMod2).add(secondSurface);
-layout.content.add(downMod3).add(thirdSurface);
-layout.content.add(downMod4).add(fourthSurface);
+}
+return;
+}
 
+createMenu();
 mainContext.add(layout);
 
 var FastClick = require('fastclick-amd');
@@ -125,12 +100,11 @@ var lightSurface = new Surface({
   lightbox.show(lightSurface);
 
 }
-
-var surfaces = [];
+var imageScrollSurfaces = [];
 
 var scrollview = new Scrollview();
 scrollview.setOptions({});
-scrollview.sequenceFrom(surfaces);
+scrollview.sequenceFrom(imageScrollSurfaces);
 
 var stateModifier = new StateModifier({
     origin: [1, 0]
@@ -143,10 +117,6 @@ function clickHandler() {
 }
 
 var charactersSoFar=0;
-
-//should make this dynamic after the first call or something based on the response.data.total
-// var totalPagesToFetch=14;
-var totalPagesToFetch=1;
 
 function SortByName(a, b) {
   var aName = a.characterName.toLowerCase();
@@ -168,15 +138,41 @@ surface.on('click', clickHandler);
 surface.clickOrder=j;
 surface.characterName=charactersWithThumbnails[j].name;
 
-surfaces.push(surface);
+imageScrollSurfaces.push(surface);
     }
-  surfaces.sort(SortByName);
+  imageScrollSurfaces.sort(SortByName);
 }
 
-for (var x=0;x<totalPagesToFetch;x++) {
+//we cache just 40 characters for the first load
+var myDataRef = new window.Firebase('https://famous-marvel.firebaseio.com/firstBatch');
+myDataRef.on('value', function(snapshot) {
 
-  var characters = Marvel.getCharacters(100,x*100);
-  characters.success(successCallback);
-}
+  if(snapshot.val() === null) return;
+  else {
+    var characters = snapshot.val().characters;
+    var response = {
+      data:{
+         results:characters
+      }
+    };
+   successCallback(response);
+  }
+});
+
+//then add the rest
+var myDataRef2 = new window.Firebase('https://famous-marvel.firebaseio.com/allCharacters');
+myDataRef2.on('value', function(snapshot) {
+
+  if(snapshot.val() === null) return;
+  else {
+    var characters = snapshot.val().characters;
+    var response = {
+      data:{
+         results:characters
+      }
+    };
+   successCallback(response);
+  }
+});
 
 });
