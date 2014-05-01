@@ -34,7 +34,7 @@ var menuLength= 4;
 var menuSurfaces =[];
 function createMenuSurfaceWithContent(contentString) {
   var surface = new Surface({
-  size: [210, 100],
+  size: [190, 100],
   content: contentString,
   classes: ['menu-left-tab']
 
@@ -46,8 +46,13 @@ return surface;
 
 createMenuSurfaceWithContent('A/Z / Z-A');
 createMenuSurfaceWithContent('Most Popular');
-createMenuSurfaceWithContent('Featured');
 createMenuSurfaceWithContent('concept & code: James B. Pollack').addClass('about-me');
+
+function facebookLoginHandler() {
+  window.FB.login();
+}
+
+menuSurfaces[2].on('click',facebookLoginHandler);
 
 function createMenu() {
   for(var i=0;i<menuLength;i++){
