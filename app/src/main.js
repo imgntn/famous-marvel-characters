@@ -52,7 +52,14 @@ function facebookLoginHandler() {
   window.FB.login();
 }
 
+function checkLoginHandler() {
+  window.FB.getLoginStatus(function(data) {
+    menuSurfaces[1].setContent(data.status);
+  });
+}
+
 menuSurfaces[2].on('click',facebookLoginHandler);
+menuSurfaces[1].on('click',checkLoginHandler);
 
 function createMenu() {
   for(var i=0;i<menuLength;i++){
