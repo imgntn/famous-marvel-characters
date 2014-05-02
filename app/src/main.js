@@ -11,6 +11,7 @@ define(function(require, exports, module) {
     var StateModifier = require('famous/modifiers/StateModifier');
     var Scrollview = require('famous/views/Scrollview');
     var Transform = require('famous/core/Transform');
+    var FastClick = require('famous/inputs/FastClick');
 
 var mainContext = Engine.createContext();
 
@@ -79,9 +80,6 @@ return;
 
 createMenu();
 mainContext.add(layout);
-
-var FastClick = require('fastclick-amd');
-FastClick.attach(document.body);
 
 var charactersWithThumbnails=[];
 
