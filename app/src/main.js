@@ -45,9 +45,8 @@ menuSurfaces.push(surface);
 return surface;
 }
 
-createMenuSurfaceWithContent('A/Z / Z-A');
-createMenuSurfaceWithContent('Most Popular');
-createMenuSurfaceWithContent('concept & code: James B. Pollack').addClass('about-me');
+createMenuSurfaceWithContent('FB Login Status');
+createMenuSurfaceWithContent('Login with Facebook').addClass('about-me');
 
 function facebookLoginHandler() {
   window.FB.login();
@@ -59,8 +58,8 @@ function checkLoginHandler() {
   });
 }
 
-menuSurfaces[2].on('click',facebookLoginHandler);
-menuSurfaces[1].on('click',checkLoginHandler);
+menuSurfaces[0].on('click',checkLoginHandler);
+menuSurfaces[1].on('click',facebookLoginHandler);
 
 function createMenu() {
   for(var i=0;i<menuLength;i++){
@@ -103,7 +102,7 @@ var lightSurface = new Surface({
   }
 });
 
-  lightSurface.on('click',function() {
+  lightSurface.on('fastclick',function() {
   destroyLightbox();
   });
 
