@@ -102,7 +102,7 @@ var lightSurface = new Surface({
   }
 });
 
-  lightSurface.on('fastclick',function() {
+  lightSurface.on('click',function() {
   destroyLightbox();
   });
 
