@@ -54,7 +54,7 @@ function facebookLoginHandler() {
 
 function checkLoginHandler() {
   window.FB.getLoginStatus(function(data) {
-    menuSurfaces[1].setContent(data.status);
+    menuSurfaces[0].setContent(data.status);
   });
 }
 
