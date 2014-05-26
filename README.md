@@ -6,19 +6,19 @@ famo.us + marvel comics API = famous marvel characters
 
 To Do:
 - add loader w/ animation (initial marvel api call takes about 600ms)
+- 	for now i've just cached the api call in firebase for demo purposes.  
 - change image size request depending on avail. screen size
-- divide results into grids and put grids into a sequenced scrollview
-- add an 'infinite scroll' that fetches more grids when you get close to the last grid
 - style the lightboxes & their animations
 - get some more interesting results into the lightboxes 
-	- wiki from marvel is so slow!!
+	- wiki from marvel is so slow!! the api returns empty descriptions.  i've emailed marvel about this.
 	- short bio would be perfect
 	- character image here too
-	- alt: comics, stories, evenets, etc.
+	- alternative: comics, stories, events, etc. in graph relation
 	- left or right scroll to next/prev lightbox
 - add character search box
 - add search results view
-
+- add favorites
+- add most viewed
 
 >
 after whitelisting your localhost and deploy domains with marvel:
